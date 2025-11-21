@@ -1,73 +1,30 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000" />
-    <title>سكان برايس+</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>منتجاتنا</title>
+    <meta charset='utf-8'>
     <style>
-      body {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        font-family: 'Tajawal', sans-serif;
-      }
-      @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-      
-      @media print {
-        body.printing-qr > *:not(#qr-modal-backdrop) {
-            display: none !important;
-        }
-        body.printing-qr #qr-modal-backdrop {
-            position: absolute !important;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white !important;
-            justify-content: center;
-            align-items: center;
-        }
-        body.printing-qr #qr-modal-content {
-            background-color: transparent !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-        }
-        body.printing-qr .non-printable {
-            display: none !important;
-        }
-        body.printing-qr #printable-qr-area h3,
-        body.printing-qr #printable-qr-area p {
-           color: black !important;
-        }
-        body.printing-qr #printable-qr-area > div { /* Target the QR code container */
-            padding: 0 !important;
-            background: transparent !important;
-        }
-        body.printing-qr canvas {
-            filter: invert(1);
-        }
-      }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; text-align: right; direction: rtl; background-color: #f4f4f9; }
+        h1 { color: #333; border-bottom: 2px solid #ccc; padding-bottom: 10px; }
+        .product-card { background-color: #fff; border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .product-card h3 { margin-top: 0; color: #007bff; }
+        .product-card p { color: #555; }
+        .product-card a { display: inline-block; padding: 8px 15px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0"
-  }
-}
-</script>
 </head>
-  <body class="bg-gray-900 text-gray-100">
-    <noscript>تحتاج إلى تمكين جافا سكريبت لتشغيل هذا التطبيق.</noscript>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+<body>
+    <h1>قائمة منتجاتنا</h1>
+    <div id='products'></div>
+    <script>
+        fetch('products.json')
+            .then(r => r.json())
+            .then(products => {
+                const container = document.getElementById('products');
+                products.forEach(p => {
+                    container.innerHTML += '<div class="product-card"><h3>' + p.Name + '</h3><p>السعر: ' + p.Price.toFixed(2) + ' جنيه</p><a href="product' + p.ID + '.html">مسح QR لعرض التفاصيل</a></div>';
+                });
+            });
+            .catch(e => { console.error('Error fetching products:', e); document.getElementById('products').innerHTML = '<p style="color: red;">تعذر تحميل المنتجات. تأكد من عمل "تصدير JSON" بشكل صحيح.</p>'; });
+    </script>
+</body>
 </html>
